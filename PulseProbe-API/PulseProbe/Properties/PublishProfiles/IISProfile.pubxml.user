@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>
+    </EncryptedPassword>
+    <History>True|2023-07-11T12:14:52.0016600Z;True|2023-07-10T22:26:55.8665113+05:45;True|2023-07-10T15:45:01.5837185+05:45;True|2023-07-09T22:47:50.7981459+05:45;True|2023-07-09T22:20:05.6604946+05:45;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="Dbstring">
+      <Value>Server=DESKTOP-O1N6BED\MSSQLSERVER1%3bDatabase=PulseProbe%3bUser Id=sa%3bpassword=sasa%3bTrusted_Connection=True%3bTrustServerCertificate=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="PulseProbe.AppDBContext.AppDbContext">
+      <Value>Server=DESKTOP-O1N6BED\MSSQLSERVER1%3bDatabase=PulseProbe%3bUser Id=sa%3bpassword=sasa%3bTrusted_Connection=True%3bTrustServerCertificate=True</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
