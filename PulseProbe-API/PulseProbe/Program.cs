@@ -7,7 +7,6 @@ using PulseProbe.EndPoints.LabEndPoint;
 using PulseProbe.Model;
 using PulseProbe.Repository;
 using PulseProbe.Validator;
-using SeleniumTutorial;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +27,7 @@ builder.Services.AddDbContextPool<AppDbContext>(
 
 builder.Services.AddRepositoryService();
 builder.Services.AddValidatorService();
-builder.Services.AddScoped<ISeleniumTests, SeleniumTests>();
+builder.Services.AddScoped<INMCDoctor, NMCDoctor>();
 
 var app = builder.Build();
 
@@ -44,10 +43,10 @@ app.UseHttpsRedirection();
 PatientEndPoint.RegisterPatientEndPoints(app);
 DoctorEndPoint.RegisterDoctorEndPoints(app);
 LabEndPoint.RegisterLabEndPoints(app);
-app.MapGet("/getDoctorFromNMCSite", (ISeleniumTests test) =>
-{
-    return Results.Ok(test.ValidateTheMessageIsDisplayed());
-});
+//app.MapGet("/getDoctorFromNMCSite", (ISeleniumTests test) =>
+//{
+//    return Results.Ok(test.ValidateTheMessageIsDisplayed());
+//});
 
 
 

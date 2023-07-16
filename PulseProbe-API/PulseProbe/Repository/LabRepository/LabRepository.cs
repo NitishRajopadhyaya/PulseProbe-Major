@@ -20,6 +20,7 @@ namespace PulseProbe.Repository
         public List<LabModel> GetAll()
         {
             return _context.Lab.ToList();
+
         }
 
         public LabModel GetByid(int id)

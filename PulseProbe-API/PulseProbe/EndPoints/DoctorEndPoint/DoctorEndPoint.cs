@@ -20,7 +20,7 @@ namespace PulseProbe.EndPoints.DoctorEndPoint
             var patient = _doctorRepo.GetAll();
             return Results.Ok(patient);
         }
-        public static async Task<IResult> AddDoctorInfo(IDoctorRepository _doctorRepo, DoctorModel model, IValidator<DoctorModel> validator)
+        public static async Task<IResult> AddDoctorInfo(IDoctorRepository _doctorRepo,INMCDoctor _nMCDoctor, DoctorModel model, IValidator<DoctorModel> validator)
         {
             var validationResult = await validator.ValidateAsync(model);
 
@@ -33,6 +33,11 @@ namespace PulseProbe.EndPoints.DoctorEndPoint
                 }
                 return Results.BadRequest(Errorlist);
                 //return Results.BadRequest(validationResult.Errors.ToList());
+            }
+            var doctorVerification = _nMCDoctor.ValidateDoctor(model.FirstName +" "+ model.LastName, model.NMCNumber, model.Degree);
+            if(doctorVerification == false)
+            {
+                return Results.BadRequest("Doctor Not Redistered in NMC");
             }
             var patient = _doctorRepo.Create(model);
             return Results.Ok(patient);

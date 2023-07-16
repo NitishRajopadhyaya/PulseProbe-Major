@@ -268,3 +268,65 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131029_DoctorModelModified')
+BEGIN
+    EXEC sp_rename N'[Doctor].[Certificate]', N'Description', N'COLUMN';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131029_DoctorModelModified')
+BEGIN
+    ALTER TABLE [Doctor] ADD [Gender] nvarchar(10) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131029_DoctorModelModified')
+BEGIN
+    ALTER TABLE [Doctor] ADD [Qualification] nvarchar(50) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131029_DoctorModelModified')
+BEGIN
+    ALTER TABLE [Doctor] ADD [Speciality] nvarchar(100) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131029_DoctorModelModified')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230711131029_DoctorModelModified', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131809_labmodified')
+BEGIN
+    ALTER TABLE [Lab] ADD [District] nvarchar(20) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131809_labmodified')
+BEGIN
+    ALTER TABLE [Lab] ADD [Province] nvarchar(20) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230711131809_labmodified')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230711131809_labmodified', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
