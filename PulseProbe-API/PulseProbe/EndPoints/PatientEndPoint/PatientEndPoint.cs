@@ -29,7 +29,12 @@ namespace EndPoints.PatientEndPoints
             var validationResult = await validator.ValidateAsync(model);
             if (!validationResult.IsValid)
             {
-                return Results.BadRequest(validationResult.Errors.ToList());
+                var Errorlist = new List<string>();
+                foreach (var error in validationResult.Errors.ToList())
+                {
+                    Errorlist.Add(error.PropertyName + ":" + error.ErrorMessage);
+                }
+                return Results.BadRequest(Errorlist);
             }
             var patient = await _patientRepo.CreatePatient(model);
             return Results.Ok(patient);

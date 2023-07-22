@@ -8,6 +8,7 @@ namespace PulseProbe.Repository
             ser.AddScoped<IPatientRepository,PatientRepository>();
             ser.AddScoped<IDoctorRepository, DoctorRepository>();
             ser.AddScoped<ILabRepository, LabRepository>();
+            ser.AddScoped<ITimeScheduleRepository, TimeScheduleRepository>();
         }
     }
 }

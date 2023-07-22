@@ -330,3 +330,48 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230717114527_Schedule')
+BEGIN
+    CREATE TABLE [TimeSchedule] (
+        [ScheduleId] int NOT NULL IDENTITY,
+        [DoctorId] int NOT NULL,
+        [ClinicId] int NOT NULL,
+        [StartingTime] nvarchar(30) NOT NULL,
+        [EndingTime] nvarchar(30) NOT NULL,
+        CONSTRAINT [PK_TimeSchedule] PRIMARY KEY ([ScheduleId])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230717114527_Schedule')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230717114527_Schedule', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230717165756_schedulechanges')
+BEGIN
+    EXEC sp_rename N'[TimeSchedule].[DoctorId]', N'DId', N'COLUMN';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230717165756_schedulechanges')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230717165756_schedulechanges', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+

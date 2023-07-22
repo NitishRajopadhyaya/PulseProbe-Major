@@ -13,5 +13,6 @@ namespace PulseProbe.AppDBContext
         public DbSet<PatientModel> Patient { get; set; }
         public DbSet<DoctorModel> Doctor { get; set; }
         public DbSet<LabModel> Lab { get; set; }
+        public  DbSet<TimeScheduleModel> TimeSchedule { get; set; }
     }
 }

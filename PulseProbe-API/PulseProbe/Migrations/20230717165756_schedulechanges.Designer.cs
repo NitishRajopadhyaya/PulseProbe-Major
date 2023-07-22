@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PulseProbe.AppDBContext;
 
@@ -10,9 +11,11 @@ using PulseProbe.AppDBContext;
 namespace PulseProbe.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230717165756_schedulechanges")]
+    partial class schedulechanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,33 +205,22 @@ namespace PulseProbe.Migrations
                     b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorId")
+                    b.Property<int>("DId")
                         .HasColumnType("int");
 
                     b.Property<string>("EndingTime")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("StartingTime")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ScheduleId");
 
-                    b.HasIndex("DoctorId");
-
                     b.ToTable("TimeSchedule");
-                });
-
-            modelBuilder.Entity("PulseProbe.Model.TimeScheduleModel", b =>
-                {
-                    b.HasOne("PulseProbe.Model.DoctorModel", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
                 });
 #pragma warning restore 612, 618
         }

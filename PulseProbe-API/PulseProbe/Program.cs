@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PulseProbe.AppDBContext;
 using PulseProbe.EndPoints.DoctorEndPoint;
 using PulseProbe.EndPoints.LabEndPoint;
+using PulseProbe.EndPoints.TimeScheduleEndPoint;
 using PulseProbe.Model;
 using PulseProbe.Repository;
 using PulseProbe.Validator;
@@ -43,6 +44,7 @@ app.UseHttpsRedirection();
 PatientEndPoint.RegisterPatientEndPoints(app);
 DoctorEndPoint.RegisterDoctorEndPoints(app);
 LabEndPoint.RegisterLabEndPoints(app);
+TimeScheduleEndPoint.RegisterTimeScheduleEndPoint(app);
 //app.MapGet("/getDoctorFromNMCSite", (ISeleniumTests test) =>
 //{
 //    return Results.Ok(test.ValidateTheMessageIsDisplayed());
