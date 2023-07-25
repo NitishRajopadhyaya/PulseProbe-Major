@@ -1,25 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace PulseProbe.Model
 {
-    [PrimaryKey("LabId")]
-    public class LabModel
+    public class ClinicModel
     {
-        public int LabId { get; set; }
+        public int ClinicId { get; set; }
         [MaxLength(50)]
-        public string LabName { get; set; }
+        public string ClinicName { get; set; }
         public int LicsenceNumber { get; set; }
+        public string PanNumber { get; set; }
         [MaxLength(20)]
         public string Address { get; set; }
         [MaxLength(20)]
-        public string Province { get; set; }
+        public string state { get; set; }
         [MaxLength(20)]
         public string District { get; set; }
         public int PhoneNumber { get; set; }
         public string Description { get; set; }
         [MaxLength(50)]
         public string Email { get; set; }
-        public string Image { get; set; }
+        [NotMapped]
+        public string ClinicImage { get; set; }
+        public decimal Laltitude { get; set; }
+        public decimal Longitude { get; set; }
     }
 }

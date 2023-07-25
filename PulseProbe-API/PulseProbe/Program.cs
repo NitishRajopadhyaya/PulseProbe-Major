@@ -2,11 +2,14 @@ using EndPoints.PatientEndPoints;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PulseProbe.AppDBContext;
+using PulseProbe.EndPoints;
 using PulseProbe.EndPoints.DoctorEndPoint;
-using PulseProbe.EndPoints.LabEndPoint;
+using PulseProbe.EndPoints.HealthCareCenterEndPoint;
+using PulseProbe.EndPoints.Services;
 using PulseProbe.EndPoints.TimeScheduleEndPoint;
 using PulseProbe.Model;
 using PulseProbe.Repository;
+using PulseProbe.utility;
 using PulseProbe.Validator;
 using Serilog;
 
@@ -29,6 +32,7 @@ builder.Services.AddDbContextPool<AppDbContext>(
 builder.Services.AddRepositoryService();
 builder.Services.AddValidatorService();
 builder.Services.AddScoped<INMCDoctor, NMCDoctor>();
+builder.Services.AddScoped<IImage, Image>();
 
 var app = builder.Build();
 
@@ -43,8 +47,10 @@ app.UseHttpsRedirection();
 
 PatientEndPoint.RegisterPatientEndPoints(app);
 DoctorEndPoint.RegisterDoctorEndPoints(app);
-LabEndPoint.RegisterLabEndPoints(app);
+HealthCareCenterEndPoint.RegisterLabEndPoints(app);
 TimeScheduleEndPoint.RegisterTimeScheduleEndPoint(app);
+ServicesEndPoint.RegisterServicesEndPoints(app);
+BookingEndpoint.RegisterBookingndPoints(app);
 //app.MapGet("/getDoctorFromNMCSite", (ISeleniumTests test) =>
 //{
 //    return Results.Ok(test.ValidateTheMessageIsDisplayed());

@@ -58,16 +58,16 @@ namespace PulseProbe.Repository
         {
             try
             {
-                var schedule = _context.TimeSchedule.Attach(model);
                 model.Doctor = null;
-                schedule.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                var schedule = _context.TimeSchedule.Update(model);
+                //schedule.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return Results.Ok("Information Udpated");  
 
             }
             catch (Exception ex)
             {
-                return Results.Problem(detail: ex.Message, statusCode: 500);
+                return Results.Problem(detail: ex.Message, statusCode: 500,type:ex.InnerException.ToString());
             }
 
         }

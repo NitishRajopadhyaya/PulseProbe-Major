@@ -375,3 +375,254 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230721115518_Fkadded')
+BEGIN
+    EXEC sp_rename N'[TimeSchedule].[DId]', N'DoctorId', N'COLUMN';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230721115518_Fkadded')
+BEGIN
+    DECLARE @var7 sysname;
+    SELECT @var7 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[TimeSchedule]') AND [c].[name] = N'StartingTime');
+    IF @var7 IS NOT NULL EXEC(N'ALTER TABLE [TimeSchedule] DROP CONSTRAINT [' + @var7 + '];');
+    ALTER TABLE [TimeSchedule] ALTER COLUMN [StartingTime] nvarchar(30) NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230721115518_Fkadded')
+BEGIN
+    DECLARE @var8 sysname;
+    SELECT @var8 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[TimeSchedule]') AND [c].[name] = N'EndingTime');
+    IF @var8 IS NOT NULL EXEC(N'ALTER TABLE [TimeSchedule] DROP CONSTRAINT [' + @var8 + '];');
+    ALTER TABLE [TimeSchedule] ALTER COLUMN [EndingTime] nvarchar(30) NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230721115518_Fkadded')
+BEGIN
+    CREATE INDEX [IX_TimeSchedule_DoctorId] ON [TimeSchedule] ([DoctorId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230721115518_Fkadded')
+BEGIN
+    ALTER TABLE [TimeSchedule] ADD CONSTRAINT [FK_TimeSchedule_Doctor_DoctorId] FOREIGN KEY ([DoctorId]) REFERENCES [Doctor] ([DoctorId]) ON DELETE CASCADE;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230721115518_Fkadded')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230721115518_Fkadded', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    DECLARE @var9 sysname;
+    SELECT @var9 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Patient]') AND [c].[name] = N'PatientImage');
+    IF @var9 IS NOT NULL EXEC(N'ALTER TABLE [Patient] DROP CONSTRAINT [' + @var9 + '];');
+    ALTER TABLE [Patient] DROP COLUMN [PatientImage];
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    DECLARE @var10 sysname;
+    SELECT @var10 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Lab]') AND [c].[name] = N'Image');
+    IF @var10 IS NOT NULL EXEC(N'ALTER TABLE [Lab] DROP CONSTRAINT [' + @var10 + '];');
+    ALTER TABLE [Lab] DROP COLUMN [Image];
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    EXEC sp_rename N'[Lab].[Province]', N'state', N'COLUMN';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    ALTER TABLE [Patient] ADD [District] nvarchar(50) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    ALTER TABLE [Patient] ADD [Municiplaity] nvarchar(50) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    ALTER TABLE [Patient] ADD [PatientMiddleName] nvarchar(50) NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    ALTER TABLE [Patient] ADD [WardNo] int NOT NULL DEFAULT 0;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    ALTER TABLE [Patient] ADD [state] nvarchar(50) NOT NULL DEFAULT N'';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230723173405_UpdatedModels')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230723173405_UpdatedModels', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230724154038_clinicLabservices')
+BEGIN
+    ALTER TABLE [Lab] ADD [Laltitude] decimal(18,2) NOT NULL DEFAULT 0.0;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230724154038_clinicLabservices')
+BEGIN
+    ALTER TABLE [Lab] ADD [Longitude] decimal(18,2) NOT NULL DEFAULT 0.0;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230724154038_clinicLabservices')
+BEGIN
+    CREATE TABLE [ServicesProvided] (
+        [ServiceId] int NOT NULL IDENTITY,
+        [ServiceName] nvarchar(max) NOT NULL,
+        CONSTRAINT [PK_ServicesProvided] PRIMARY KEY ([ServiceId])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230724154038_clinicLabservices')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230724154038_clinicLabservices', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725151114_LabtoHealthcareModel')
+BEGIN
+    DROP TABLE [Lab];
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725151114_LabtoHealthcareModel')
+BEGIN
+    CREATE TABLE [HealthcareCenter] (
+        [HealthCareCenterId] int NOT NULL IDENTITY,
+        [HealthCareCenterName] nvarchar(50) NOT NULL,
+        [LicsenceNumber] int NOT NULL,
+        [PanNumber] nvarchar(max) NOT NULL,
+        [Address] nvarchar(20) NOT NULL,
+        [state] nvarchar(20) NOT NULL,
+        [District] nvarchar(20) NOT NULL,
+        [PhoneNumber] int NOT NULL,
+        [Description] nvarchar(max) NOT NULL,
+        [Email] nvarchar(50) NOT NULL,
+        [Laltitude] decimal(18,2) NOT NULL,
+        [Longitude] decimal(18,2) NOT NULL,
+        [Type] nvarchar(max) NOT NULL,
+        CONSTRAINT [PK_HealthcareCenter] PRIMARY KEY ([HealthCareCenterId])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725151114_LabtoHealthcareModel')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230725151114_LabtoHealthcareModel', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725173048_Booking')
+BEGIN
+    CREATE TABLE [Booking] (
+        [BookingId] int NOT NULL IDENTITY,
+        [PatientId] int NOT NULL,
+        [DoctorId] int NOT NULL,
+        [ClinicId] int NOT NULL,
+        [Time] nvarchar(20) NOT NULL,
+        [BookedDate] nvarchar(20) NOT NULL,
+        CONSTRAINT [PK_Booking] PRIMARY KEY ([BookingId]),
+        CONSTRAINT [FK_Booking_Doctor_DoctorId] FOREIGN KEY ([DoctorId]) REFERENCES [Doctor] ([DoctorId]) ON DELETE CASCADE,
+        CONSTRAINT [FK_Booking_HealthcareCenter_ClinicId] FOREIGN KEY ([ClinicId]) REFERENCES [HealthcareCenter] ([HealthCareCenterId]) ON DELETE CASCADE,
+        CONSTRAINT [FK_Booking_Patient_PatientId] FOREIGN KEY ([PatientId]) REFERENCES [Patient] ([PatientId]) ON DELETE CASCADE
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725173048_Booking')
+BEGIN
+    CREATE INDEX [IX_Booking_ClinicId] ON [Booking] ([ClinicId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725173048_Booking')
+BEGIN
+    CREATE INDEX [IX_Booking_DoctorId] ON [Booking] ([DoctorId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725173048_Booking')
+BEGIN
+    CREATE INDEX [IX_Booking_PatientId] ON [Booking] ([PatientId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230725173048_Booking')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230725173048_Booking', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+

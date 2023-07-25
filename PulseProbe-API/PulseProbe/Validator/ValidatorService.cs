@@ -9,8 +9,10 @@ namespace PulseProbe.Validator
         {
             ser.AddScoped<IValidator<PatientModel>, PatientValidator>();
             ser.AddScoped<IValidator<DoctorModel>, DoctorValidator>();
-            ser.AddScoped<IValidator<LabModel>, LabValidator>();
+            ser.AddScoped<IValidator<HealthCareCenterModel>, HealthCareCenterValidator>();
             ser.AddScoped<IValidator<TimeScheduleModel>, TimeScheduleValidator>();
+            ser.AddScoped<IValidator<ClinicLabServiceModel>, ServiceValidator>();
+            ser.AddScoped<IValidator<BookingModel>, BookingValidator>();
         }
 
     }

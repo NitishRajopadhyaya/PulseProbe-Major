@@ -1,20 +1,32 @@
 ﻿using PulseProbe.AppDBContext;
 using PulseProbe.Model;
+using PulseProbe.utility;
 
 namespace PulseProbe.Repository
 {
     public class PatientRepository : IPatientRepository
     {
         private readonly AppDbContext _context;
-        public PatientRepository(AppDbContext context)
+        private readonly IImage _image;
+        public PatientRepository(AppDbContext context, IImage image)
         {
             _context = context;
+            _image = image;
         }
-        public async Task<PatientModel> CreatePatient(PatientModel model)
+        public async Task<IResult> CreatePatient(PatientModel model)
         {
-            await _context.Patient.AddAsync(model);
-            _context.SaveChanges();
-            return model;
+            try
+            {
+                _image.DecodeBase64String(model.PatientImage, "PatientImages", model.PatientFirstName, model.PatientLastName);
+                await _context.Patient.AddAsync(model);
+                await _context.SaveChangesAsync();
+                return Results.Ok("Patient Added");
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(detail:ex.Message,statusCode:500);
+            }
+            
         }
 
         public async Task<PatientModel> DeletePatient(int id)
@@ -34,18 +46,40 @@ namespace PulseProbe.Repository
             
         }
 
-        public  PatientModel GetPatientByid(int id)
+        public  async Task<IResult> GetPatientByid(int id)
         {
-            var patient =  _context.Patient.Find(id);
-            return patient;
+            try
+            {
+
+                var patient = await _context.Patient.FindAsync(id);
+                if (patient == null)
+                {
+                    return Results.Problem(detail: "Patient Not Found", statusCode: 404);
+                }
+                patient.PatientImage = _image.encodeToBase64(patient.PatientFirstName, patient.PatientLastName, "PatientImages");
+                return Results.Ok(patient);
+                
+            }
+            catch(Exception ex)
+            {
+                return Results.Problem(detail: ex.Message, statusCode: 500);
+            }
+            
         }
 
-        public PatientModel UpdatePatient(int id,PatientModel model)
+        public async Task<IResult> UpdatePatient(PatientModel model)
         {
-            var patient = _context.Patient.Attach(model);
-            patient.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.SaveChanges();
-            return model;
+            try
+            {
+                var patient = _context.Patient.Update(model);
+                await _context.SaveChangesAsync();
+                return Results.Ok("Information Updated");
+            }
+            
+            catch(Exception ex)
+            {
+                return Results.Problem(detail: ex.Message, statusCode: 500);
+            }
         }
     }
 }

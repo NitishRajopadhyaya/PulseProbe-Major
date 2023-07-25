@@ -3,19 +3,19 @@ using PulseProbe.Model;
 
 namespace PulseProbe.Validator
 {
-    public class LabValidator:AbstractValidator<LabModel>
+    public class HealthCareCenterValidator : AbstractValidator<HealthCareCenterModel>
     {
-        public LabValidator()
+        public HealthCareCenterValidator()
         {
-            RuleFor(x => x.LabName)
+            RuleFor(x => x.HealthCareCenterName)
                        .NotEmpty()
-                       .WithMessage("LabName is Required")
+                       .WithMessage("Healthcare center is Required")
                        .Matches("^[A-Za-z ]+$")
                        .WithMessage("Value should be String only");
             RuleFor(x => x.Address)
                         .NotEmpty()
                         .WithMessage("Address must be provided")
-                        .Matches("^[A-Za-z ]+$")
+                        .Matches("^[A-Za-z, ]+$")
                         .WithMessage("Value should be String only");
             RuleFor(x=>x.PhoneNumber)
                         .NotEmpty()
@@ -33,15 +33,21 @@ namespace PulseProbe.Validator
                         .WithMessage("District is Required")
                         .Matches("^[A-Za-z ]+$")
                         .WithMessage("Value should be String only");
-            RuleFor(x => x.Province)
+            RuleFor(x => x.state)
                         .NotEmpty()
                         .WithMessage("Province is Required");
-            RuleFor(x => x.Image)
+            RuleFor(x => x.HealthCenterImage)
                         .NotEmpty()
                         .WithMessage("Image must be provided");
             RuleFor(x=>x.LicsenceNumber)
                         .NotEmpty()
                         .WithMessage("LicsenceNumber must be provided");
+            RuleFor(x=>x.Type)
+                        .NotEmpty()
+                        .WithMessage("Type of Healthcare must be provided");
+            RuleFor(x => x.PanNumber)
+                        .NotEmpty()
+                        .WithMessage("PanNumber must be provided");
 
 
         }

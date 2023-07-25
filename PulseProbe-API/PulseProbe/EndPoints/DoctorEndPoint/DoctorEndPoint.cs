@@ -23,7 +23,6 @@ namespace PulseProbe.EndPoints.DoctorEndPoint
         public static async Task<IResult> AddDoctorInfo(IDoctorRepository _doctorRepo,INMCDoctor _nMCDoctor, DoctorModel model, IValidator<DoctorModel> validator)
         {
             var validationResult = await validator.ValidateAsync(model);
-
             if (!validationResult.IsValid)
             {
                 var Errorlist = new List<string>();
@@ -32,25 +31,31 @@ namespace PulseProbe.EndPoints.DoctorEndPoint
                     Errorlist.Add(error.PropertyName + ":" + error.ErrorMessage);
                 }
                 return Results.BadRequest(Errorlist);
-                //return Results.BadRequest(validationResult.Errors.ToList());
             }
             var doctorVerification = _nMCDoctor.ValidateDoctor(model.FirstName +" "+ model.LastName, model.NMCNumber, model.Degree);
             if(doctorVerification == false)
             {
-                return Results.BadRequest("Doctor Not Redistered in NMC");
+                return Results.Problem(detail:"Doctor Not Registered in NMC",statusCode:404);
             }
-            var patient = _doctorRepo.Create(model);
-            return Results.Ok(patient);
+            return await _doctorRepo.Create(model);
         }
-        public static IResult Update(IDoctorRepository _doctorRepo, DoctorModel model)
+        public static async Task<IResult> Update(IDoctorRepository _doctorRepo,IValidator<DoctorModel> validator, DoctorModel model)
         {
-            var patient = _doctorRepo.Update(model);
-            return Results.Ok(patient);
+            var validationResult = await validator.ValidateAsync(model);
+            if (!validationResult.IsValid)
+            {
+                var Errorlist = new List<string>();
+                foreach (var error in validationResult.Errors.ToList())
+                {
+                    Errorlist.Add(error.PropertyName + ":" + error.ErrorMessage);
+                }
+                return Results.BadRequest(Errorlist);
+            }
+            return await _doctorRepo.Update(model);
         }
-        public static IResult GetById(IDoctorRepository _doctorRepo, int id)
+        public static async Task<IResult> GetById(IDoctorRepository _doctorRepo, int id)
         {
-            var patient = _doctorRepo.GetByid(id);
-            return Results.Ok(patient);
+            return await _doctorRepo.GetByid(id);
         }
     }
 }

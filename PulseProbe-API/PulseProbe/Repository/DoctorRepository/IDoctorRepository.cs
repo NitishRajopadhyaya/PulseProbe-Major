@@ -4,9 +4,9 @@ namespace PulseProbe.Repository
 {
     public interface IDoctorRepository
     {
-        DoctorModel GetByid(int id);
-        DoctorModel Update(DoctorModel model);
-        DoctorModel Create(DoctorModel model);
+        Task<IResult> GetByid(int id);
+        Task<IResult> Update(DoctorModel model);
+        Task<IResult> Create(DoctorModel model);
         List<DoctorModel> GetAll();
     }
 }

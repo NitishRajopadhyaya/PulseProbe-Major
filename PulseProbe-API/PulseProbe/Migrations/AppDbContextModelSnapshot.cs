@@ -21,6 +21,61 @@ namespace PulseProbe.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("PulseProbe.Model.BookingModel", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
+
+                    b.Property<string>("BookedDate")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Time")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("BookingId");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Booking");
+                });
+
+            modelBuilder.Entity("PulseProbe.Model.ClinicLabServiceModel", b =>
+                {
+                    b.Property<int>("ServiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"));
+
+                    b.Property<string>("ServiceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ServiceId");
+
+                    b.ToTable("ServicesProvided");
+                });
+
             modelBuilder.Entity("PulseProbe.Model.DoctorModel", b =>
                 {
                     b.Property<int>("DoctorId")
@@ -86,13 +141,13 @@ namespace PulseProbe.Migrations
                     b.ToTable("Doctor");
                 });
 
-            modelBuilder.Entity("PulseProbe.Model.LabModel", b =>
+            modelBuilder.Entity("PulseProbe.Model.HealthCareCenterModel", b =>
                 {
-                    b.Property<int>("LabId")
+                    b.Property<int>("HealthCareCenterId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LabId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HealthCareCenterId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -113,29 +168,39 @@ namespace PulseProbe.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LabName")
+                    b.Property<string>("HealthCareCenterName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<decimal>("Laltitude")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("LicsenceNumber")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PanNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("Province")
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("state")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("LabId");
+                    b.HasKey("HealthCareCenterId");
 
-                    b.ToTable("Lab");
+                    b.ToTable("HealthcareCenter");
                 });
 
             modelBuilder.Entity("PulseProbe.Model.PatientModel", b =>
@@ -159,6 +224,11 @@ namespace PulseProbe.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -169,22 +239,35 @@ namespace PulseProbe.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PatientFirstName")
+                    b.Property<string>("Municiplaity")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PatientImage")
+                    b.Property<string>("PatientFirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PatientLastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("PatientMiddleName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
+
+                    b.Property<int>("WardNo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("state")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("PatientId");
 
@@ -218,6 +301,33 @@ namespace PulseProbe.Migrations
                     b.HasIndex("DoctorId");
 
                     b.ToTable("TimeSchedule");
+                });
+
+            modelBuilder.Entity("PulseProbe.Model.BookingModel", b =>
+                {
+                    b.HasOne("PulseProbe.Model.HealthCareCenterModel", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PulseProbe.Model.DoctorModel", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PulseProbe.Model.PatientModel", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("PulseProbe.Model.TimeScheduleModel", b =>

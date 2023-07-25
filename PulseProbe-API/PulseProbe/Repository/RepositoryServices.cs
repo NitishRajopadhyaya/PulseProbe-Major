@@ -1,5 +1,4 @@
-﻿
-namespace PulseProbe.Repository
+﻿namespace PulseProbe.Repository
 {
     public static class RepositoryServices
     {
@@ -7,8 +6,10 @@ namespace PulseProbe.Repository
         {
             ser.AddScoped<IPatientRepository,PatientRepository>();
             ser.AddScoped<IDoctorRepository, DoctorRepository>();
-            ser.AddScoped<ILabRepository, LabRepository>();
+            ser.AddScoped<IHealthCareCenterRepository, HealthCareCenterRepository>();
             ser.AddScoped<ITimeScheduleRepository, TimeScheduleRepository>();
+            ser.AddScoped<IServiceRepository, ServiceRepository>();
+            ser.AddScoped<IBookingRepository,BookingRepository>();
         }
     }
 }

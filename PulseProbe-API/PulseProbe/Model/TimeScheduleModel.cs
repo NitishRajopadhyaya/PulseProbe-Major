@@ -11,7 +11,7 @@ namespace PulseProbe.Model
         public int ScheduleId { get; set; }
         public int DoctorId { get; set; }
         [ForeignKey("DoctorId")]
-        public virtual DoctorModel? Doctor{ get; set; } 
+        public virtual DoctorModel? Doctor{ get; set; } =null;
         //public DoctorModel Doctor { get; set; }
         public int ClinicId { get; set; }
         [MaxLength(30)]

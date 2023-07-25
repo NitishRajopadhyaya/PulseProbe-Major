@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PulseProbe.Model
 {
@@ -29,6 +30,8 @@ namespace PulseProbe.Model
         [MaxLength(10)]
         public string Gender { get; set; }
         public string Description { get; set; }
+        [NotMapped]
+        public string DoctorImage { get; set; }
 
     }
 }

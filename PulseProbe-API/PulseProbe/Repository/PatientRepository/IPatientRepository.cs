@@ -5,9 +5,9 @@ namespace PulseProbe.Repository
     public interface IPatientRepository
     {
         List<PatientModel> GetAllPatient();
-        Task<PatientModel> CreatePatient(PatientModel model);
-        PatientModel UpdatePatient(int id, PatientModel model);
+        Task<IResult> CreatePatient(PatientModel model);
+        Task<IResult> UpdatePatient(PatientModel model);
         Task<PatientModel> DeletePatient(int id);
-        PatientModel GetPatientByid(int id);
+        Task<IResult> GetPatientByid(int id);
     }
 }

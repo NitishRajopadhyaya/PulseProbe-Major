@@ -7,7 +7,7 @@ public class TimeScheduleValidator:AbstractValidator<TimeScheduleModel>
 {
     public TimeScheduleValidator()
     {
-        RuleFor(x => x.Doctor)
+        RuleFor(x => x.DoctorId)
                    .NotEmpty()
                    .WithMessage("DoctorId is required");
         RuleFor(x => x.ClinicId)

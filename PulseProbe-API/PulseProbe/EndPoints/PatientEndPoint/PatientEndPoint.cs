@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PulseProbe.Model;
 using PulseProbe.Repository;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
 namespace EndPoints.PatientEndPoints
@@ -15,7 +16,7 @@ namespace EndPoints.PatientEndPoints
             
             app.MapGet("Patient/GetAllDetails", Getall);
             app.MapPost("Patient/Add", AddPatientInfo);
-            app.MapPut("Patient/update/{id}", Update);
+            app.MapPut("Patient/update", Update);
             app.MapGet("Patient/GetById/{id}", GetById);
             //app.MapDelete("/DeletePatient/{id}", deletePatientInfo);
         }
@@ -36,23 +37,30 @@ namespace EndPoints.PatientEndPoints
                 }
                 return Results.BadRequest(Errorlist);
             }
-            var patient = await _patientRepo.CreatePatient(model);
-            return Results.Ok(patient);
+            return await _patientRepo.CreatePatient(model);
         }
-        public static IResult Update(IPatientRepository _patientRepo, PatientModel model, int id)
+        public static async Task<IResult> Update(IPatientRepository _patientRepo,IValidator<PatientModel> validator, PatientModel model)
         {
-            var patient = _patientRepo.UpdatePatient(id, model);
-            return Results.Ok(patient);
+            var validationResult = await validator.ValidateAsync(model);
+            if (!validationResult.IsValid)
+            {
+                var Errorlist = new List<string>();
+                foreach (var error in validationResult.Errors.ToList())
+                {
+                    Errorlist.Add(error.PropertyName + ":" + error.ErrorMessage);
+                }
+                return Results.BadRequest(Errorlist);
+            }
+            return await _patientRepo.UpdatePatient( model);
         }
         public static IResult deletePatientInfo(IPatientRepository _patientRepo, int id)
         {
             var patient = _patientRepo.DeletePatient(id);
             return Results.Ok(patient);
         }
-        public static IResult GetById(IPatientRepository _patientRepo, int id)
+        public static async Task<IResult> GetById(IPatientRepository _patientRepo, int id)
         {
-            var patient = _patientRepo.GetPatientByid(id);
-            return Results.Ok(patient);
+            return await _patientRepo.GetPatientByid(id);
         }
 
     }

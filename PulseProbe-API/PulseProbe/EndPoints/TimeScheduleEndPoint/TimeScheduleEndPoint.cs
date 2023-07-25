@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using PulseProbe.Model;
 using PulseProbe.Repository;
+using System.ComponentModel.DataAnnotations;
 
 namespace PulseProbe.EndPoints.TimeScheduleEndPoint
 {
@@ -38,8 +39,18 @@ namespace PulseProbe.EndPoints.TimeScheduleEndPoint
         {
             return await _repo.GetScheduleBydoctorIdandClinicId(doctorId, clinciId);
         }
-        public static async Task<IResult> UpdateSchedule(ITimeScheduleRepository _repo, TimeScheduleModel model)
+        public static async Task<IResult> UpdateSchedule(ITimeScheduleRepository _repo,IValidator<TimeScheduleModel> validator, TimeScheduleModel model)
         {
+            var validationResult = await validator.ValidateAsync(model);
+            if (!validationResult.IsValid)
+            {
+                var Errorlist = new List<string>();
+                foreach (var error in validationResult.Errors.ToList())
+                {
+                    Errorlist.Add(error.PropertyName + ":" + error.ErrorMessage);
+                }
+                return Results.BadRequest(Errorlist);
+            }
             return await _repo.UpdateSchedule(model);
         }
     }

@@ -42,8 +42,28 @@ namespace PulseProbe.Validator
             RuleFor(x => x.BirthDate)
                         .NotEmpty()
                         .WithMessage("DOB is required");
+            RuleFor(x => x.state)
+                        .NotEmpty()
+                        .WithMessage("state is Required")
+                        .Matches("^[A-Za-z]+$")
+                        .WithMessage("Value should be String only");
+            RuleFor(x => x.District)
+                        .NotEmpty()
+                        .WithMessage("District is Required")
+                        .Matches("^[A-Za-z]+$")
+                        .WithMessage("Value should be String only");
+            RuleFor(x => x.Municiplaity)
+                        .NotEmpty()
+                        .WithMessage("Municiplaity name is Required")
+                        .Matches("^[A-Za-z]+$")
+                        .WithMessage("Value should be String only");
+            RuleFor(x => x.WardNo)
+                        .NotEmpty()
+                        .WithMessage("WardNo is Required");
                         
-            
+
+
+
 
 
 
