@@ -25,7 +25,7 @@ namespace EndPoints.PatientEndPoints
             var patient = _patientRepo.GetAllPatient();
             return Results.Ok(patient);
         }
-        public static async Task<IResult> AddPatientInfo(IPatientRepository _patientRepo, PatientModel model, IValidator<PatientModel> validator)
+        public static async Task<IResult> AddPatientInfo(IPatientRepository _patientRepo, PatientModel model, IValidator<PatientModel> validator, IAccountRepository _accountRepo)
         {
             var validationResult = await validator.ValidateAsync(model);
             if (!validationResult.IsValid)
@@ -37,6 +37,12 @@ namespace EndPoints.PatientEndPoints
                 }
                 return Results.BadRequest(Errorlist);
             }
+            AccountModel accountModel = new AccountModel();
+            accountModel.Password = model.Password;
+            accountModel.Email = model.Email;
+            accountModel.Roles = "Patient";
+            accountModel.RegisteredDate = DateTime.Now.ToString();
+            await _accountRepo.RegisterAccountAsync(accountModel);
             return await _patientRepo.CreatePatient(model);
         }
         public static async Task<IResult> Update(IPatientRepository _patientRepo,IValidator<PatientModel> validator, PatientModel model)
