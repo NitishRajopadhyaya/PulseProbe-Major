@@ -35,6 +35,8 @@ namespace PulseProbe.Model
         public string BirthDate { get; set; }
         [NotMapped]
         public string PatientImage { get; set; }
+        [NotMapped]
+        public string Password { get; set; }
 
     }
 }

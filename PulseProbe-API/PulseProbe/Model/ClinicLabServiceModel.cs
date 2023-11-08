@@ -9,4 +9,14 @@ namespace PulseProbe.Model
         public int ServiceId { get; set; }
         public string ServiceName { get; set; }
     }
+
+    [PrimaryKey("PriceId")]
+    public class ClinicLabServicesPriceModel
+    {
+        public int PriceId { get; set; }
+        public int ClinicId { get; set; }
+        public int ServiceId { get; set; }
+        public int price { get; set; }
+    }
+    
 }
