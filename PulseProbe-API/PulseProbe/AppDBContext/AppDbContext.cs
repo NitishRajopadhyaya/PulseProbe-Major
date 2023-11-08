@@ -16,5 +16,8 @@ namespace PulseProbe.AppDBContext
         public  DbSet<TimeScheduleModel> TimeSchedule { get; set; }
         public DbSet<ClinicLabServiceModel> ServicesProvided { get; set; }
         public DbSet<BookingModel> Booking { get; set; }
+        public DbSet<TransactionModel> Transaction { get; set; }
+        public DbSet<ClinicLabServicesPriceModel> ClinicLabServicesPrice { get; set; }
+        public DbSet<AccountModel> UserAccount { get; set; }
     }
 }

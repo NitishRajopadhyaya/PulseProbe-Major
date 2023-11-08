@@ -626,3 +626,84 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230728183652_TransactionTable')
+BEGIN
+    CREATE TABLE [Transaction] (
+        [TransactionId] int NOT NULL IDENTITY,
+        [ClinicId] int NOT NULL,
+        [DoctorId] int NOT NULL,
+        [PatientId] int NOT NULL,
+        [Token] nvarchar(max) NOT NULL,
+        [Amount] int NOT NULL,
+        [RequestJson] nvarchar(max) NOT NULL,
+        [ResponseJson] nvarchar(max) NOT NULL,
+        [Status] bit NOT NULL,
+        CONSTRAINT [PK_Transaction] PRIMARY KEY ([TransactionId])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230728183652_TransactionTable')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230728183652_TransactionTable', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230817171201_Pricesetupclinicservices')
+BEGIN
+    CREATE TABLE [ClinicLabServicesPrice] (
+        [PriceId] int NOT NULL IDENTITY,
+        [ClinicId] int NOT NULL,
+        [ServiceId] int NOT NULL,
+        [price] int NOT NULL,
+        CONSTRAINT [PK_ClinicLabServicesPrice] PRIMARY KEY ([PriceId])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230817171201_Pricesetupclinicservices')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230817171201_Pricesetupclinicservices', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230818120706_account')
+BEGIN
+    CREATE TABLE [UserAccount] (
+        [UserId] int NOT NULL IDENTITY,
+        [Password] nvarchar(max) NOT NULL,
+        [Email] nvarchar(max) NOT NULL,
+        [Roles] nvarchar(max) NOT NULL,
+        [RegisteredDate] nvarchar(max) NOT NULL,
+        CONSTRAINT [PK_UserAccount] PRIMARY KEY ([UserId])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230818120706_account')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20230818120706_account', N'7.0.8');
+END;
+GO
+
+COMMIT;
+GO
+

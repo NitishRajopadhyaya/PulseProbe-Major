@@ -4,7 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using PulseProbe.AppDBContext;
 using PulseProbe.EndPoints;
 using PulseProbe.EndPoints.DoctorEndPoint;
+using PulseProbe.EndPoints.EchodataPredictionEndPoint;
 using PulseProbe.EndPoints.HealthCareCenterEndPoint;
+using PulseProbe.EndPoints.PaymentEndPoint;
+using PulseProbe.EndPoints.ServicePriceSetupEndPoint;
 using PulseProbe.EndPoints.Services;
 using PulseProbe.EndPoints.TimeScheduleEndPoint;
 using PulseProbe.Model;
@@ -34,6 +37,15 @@ builder.Services.AddValidatorService();
 builder.Services.AddScoped<INMCDoctor, NMCDoctor>();
 builder.Services.AddScoped<IImage, Image>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,6 +55,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+//app.UseCors(builder => builder
+//.AllowAnyOrigin()
+//.AllowAnyMethod()
+//.AllowAnyHeader()
+//);
+
 app.UseHttpsRedirection();
 
 PatientEndPoint.RegisterPatientEndPoints(app);
@@ -51,6 +71,9 @@ HealthCareCenterEndPoint.RegisterLabEndPoints(app);
 TimeScheduleEndPoint.RegisterTimeScheduleEndPoint(app);
 ServicesEndPoint.RegisterServicesEndPoints(app);
 BookingEndpoint.RegisterBookingndPoints(app);
+PaymentEndPoint.RegisterPaymentEndPoint(app);
+ServicePriceSetupEndPoint.RegisterServicePriceEndPoint(app);
+EchoDataPredictionEndPoint.RegisterEchoDataPredictionEndPoints(app);
 //app.MapGet("/getDoctorFromNMCSite", (ISeleniumTests test) =>
 //{
 //    return Results.Ok(test.ValidateTheMessageIsDisplayed());
